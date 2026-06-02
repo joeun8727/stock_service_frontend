@@ -16,9 +16,9 @@ function InfoRow({
   value: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-3 text-sm">
+    <div className="flex items-center gap-3 text-base">
       <Icon className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-      <span className="w-16 shrink-0 text-xs text-muted-foreground">{label}</span>
+      <span className="w-20 shrink-0 text-sm text-muted-foreground">{label}</span>
       <span className="font-medium text-foreground/90">{value}</span>
     </div>
   );
@@ -38,7 +38,7 @@ export function StockProfileCard({ profile }: StockProfileCardProps) {
   } = profile;
 
   return (
-    <div className="rounded-2xl border border-white/5 bg-zinc-900 p-6">
+    <div className="rounded-2xl border border-white/5 bg-zinc-900 p-7">
       {/* 헤더 */}
       <div className="flex items-start justify-between gap-4 mb-6">
         <div>
@@ -58,7 +58,7 @@ export function StockProfileCard({ profile }: StockProfileCardProps) {
       </div>
 
       {/* 메타 정보 그리드 */}
-      <div className="grid gap-2.5 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2">
         <InfoRow icon={BarChart2} label="섹터" value={sector} />
         <InfoRow icon={Building2} label="산업" value={industry} />
         <InfoRow icon={Building2} label="거래소" value={exchange} />

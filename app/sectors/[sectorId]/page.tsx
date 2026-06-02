@@ -2,10 +2,12 @@ import { apiGetWithDisclaimer } from "@/lib/api";
 import type { SectorTrendData } from "@/lib/types";
 import { SectorStocksTabs } from "@/components/sector/SectorStocksTabs";
 import { SectorTrendChart } from "@/components/sector/SectorTrendChart";
+import { SectorRuleOf40 } from "@/components/sector/SectorRuleOf40";
+import { SectorValuationTable } from "@/components/sector/SectorValuationTable";
 import { Disclaimer } from "@/components/common/Disclaimer";
-import { TrendChartSkeleton } from "@/components/common/LoadingSkeleton";
+import { TrendChartSkeleton, TableSkeleton } from "@/components/common/LoadingSkeleton";
 import Link from "next/link";
-import { ChevronLeft, Activity } from "lucide-react";
+import { ChevronLeft, Activity, Zap, BarChart2 } from "lucide-react";
 import { Suspense } from "react";
 
 interface Props {
@@ -32,7 +34,7 @@ export default async function SectorDetailPage({ params }: Props) {
   const sectorName = trendData?.sectorName ?? `섹터 #${sectorId}`;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 space-y-8">
+    <div className="mx-auto max-w-7xl px-6 py-12 space-y-10">
       {/* 브레드크럼 */}
       <Link
         href="/"
@@ -45,7 +47,7 @@ export default async function SectorDetailPage({ params }: Props) {
       {/* 헤더 */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">{sectorName}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{sectorName}</h1>
           {trendData?.sectorCode && (
             <p className="mt-1 text-xs font-mono text-zinc-500 tracking-widest uppercase">
               {trendData.sectorCode}
@@ -55,10 +57,10 @@ export default async function SectorDetailPage({ params }: Props) {
       </div>
 
       {/* 트렌드 차트 */}
-      <div className="rounded-2xl border border-white/5 bg-zinc-900 p-5">
-        <div className="flex items-center gap-2 mb-4">
+      <div className="rounded-2xl border border-white/5 bg-zinc-900 p-6">
+        <div className="flex items-center gap-2 mb-5">
           <Activity className="size-4 text-muted-foreground" />
-          <h2 className="text-sm font-semibold">뉴스 트렌드 (최근 14일)</h2>
+          <h2 className="text-base font-semibold">뉴스 트렌드 (최근 14일)</h2>
           <div className="ml-auto flex items-center gap-3 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <span className="inline-block size-2 rounded-sm bg-[#6366f1]" />
@@ -86,9 +88,32 @@ export default async function SectorDetailPage({ params }: Props) {
 
       {/* 종목 탭 */}
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">섹터 종목</h2>
+        <h2 className="text-xl font-semibold">섹터 종목</h2>
         <Suspense fallback={<TrendChartSkeleton />}>
           <SectorStocksTabs sectorId={sectorId} />
+        </Suspense>
+      </section>
+
+      {/* Rule of 40 */}
+      <section className="space-y-3">
+        <div className="flex items-center gap-2">
+          <Zap className="size-4 text-muted-foreground" />
+          <h2 className="text-xl font-semibold">Rule of 40</h2>
+        </div>
+        <Suspense fallback={<TableSkeleton />}>
+          <SectorRuleOf40 sectorId={sectorId} />
+        </Suspense>
+      </section>
+
+      {/* 밸류에이션 비교 */}
+      <section className="space-y-3">
+        <div className="flex items-center gap-2">
+          <BarChart2 className="size-4 text-muted-foreground" />
+          <h2 className="text-xl font-semibold">밸류에이션 비교</h2>
+          <span className="text-xs text-zinc-600">(PER / PBR / PSR / PEG)</span>
+        </div>
+        <Suspense fallback={<TableSkeleton />}>
+          <SectorValuationTable sectorId={sectorId} />
         </Suspense>
       </section>
 

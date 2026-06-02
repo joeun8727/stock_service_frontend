@@ -4,7 +4,7 @@ import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
 import { Disclaimer } from "@/components/common/Disclaimer";
 import Link from "next/link";
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, Newspaper, BookOpen, FlaskConical } from "lucide-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +34,7 @@ export default function RootLayout({
         <QueryProvider>
           {/* 글로벌 헤더 */}
           <header className="sticky top-0 z-40 border-b border-white/5 bg-black/80 backdrop-blur-md">
-            <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
+            <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-6">
               <Link
                 href="/"
                 className="flex items-center gap-2 font-bold text-foreground hover:text-primary transition-colors"
@@ -45,6 +45,29 @@ export default function RootLayout({
               <span className="hidden text-xs text-zinc-600 sm:block">
                 미장 섹터·종목 분석 정보
               </span>
+              <nav className="ml-4 flex items-center gap-1">
+                <Link
+                  href="/news"
+                  className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-zinc-400 hover:text-foreground hover:bg-white/5 transition-colors"
+                >
+                  <Newspaper className="size-3.5" aria-hidden />
+                  주요 뉴스
+                </Link>
+                <Link
+                  href="/glossary"
+                  className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-zinc-400 hover:text-foreground hover:bg-white/5 transition-colors"
+                >
+                  <BookOpen className="size-3.5" aria-hidden />
+                  용어집
+                </Link>
+                <Link
+                  href="/methodology"
+                  className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-zinc-400 hover:text-foreground hover:bg-white/5 transition-colors"
+                >
+                  <FlaskConical className="size-3.5" aria-hidden />
+                  계산 방식
+                </Link>
+              </nav>
               <div className="ml-auto">
                 <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[10px] text-zinc-500">
                   정보 제공 전용
@@ -57,8 +80,8 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
 
           {/* 글로벌 푸터 */}
-          <footer className="border-t border-white/5 bg-zinc-950 px-4 py-8">
-            <div className="mx-auto max-w-6xl space-y-2">
+          <footer className="border-t border-white/5 bg-zinc-950 px-6 py-10">
+            <div className="mx-auto max-w-7xl space-y-2">
               <Disclaimer variant="footer" />
               <p className="text-center text-[11px] text-zinc-700">
                 © 2026 StockNews. 정보 제공 전용 서비스.

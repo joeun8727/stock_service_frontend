@@ -3,13 +3,15 @@ import type { StockProfile, StockSummaryData } from "@/lib/types";
 import { StockProfileCard } from "@/components/stock/StockProfileCard";
 import { StockMetricsTable } from "@/components/stock/StockMetricsTable";
 import { StockFinancialsTabs } from "@/components/stock/StockFinancialsTabs";
+import { StockSentimentChart } from "@/components/stock/StockSentimentChart";
+import { StockScoreBreakdown } from "@/components/stock/StockScoreBreakdown";
 import { NewsList } from "@/components/news/NewsList";
 import { Disclaimer } from "@/components/common/Disclaimer";
 import { SentimentBadge } from "@/components/news/SentimentBadge";
 import Link from "next/link";
-import { ChevronLeft, Sparkles, LineChart, Newspaper } from "lucide-react";
+import { ChevronLeft, Sparkles, LineChart, Newspaper, Activity, Award } from "lucide-react";
 import { Suspense } from "react";
-import { StockDetailSkeleton, NewsListSkeleton } from "@/components/common/LoadingSkeleton";
+import { StockDetailSkeleton, NewsListSkeleton, TrendChartSkeleton, ScoreBreakdownSkeleton } from "@/components/common/LoadingSkeleton";
 
 interface Props {
   params: Promise<{ ticker: string }>;
@@ -26,11 +28,11 @@ function SectionCard({
 }) {
   return (
     <div className="rounded-2xl border border-white/5 bg-zinc-900">
-      <div className="flex items-center gap-2 border-b border-white/5 px-5 py-3">
+      <div className="flex items-center gap-2 border-b border-white/5 px-6 py-4">
         <Icon className="size-4 text-muted-foreground" />
-        <h2 className="text-sm font-semibold">{title}</h2>
+        <h2 className="text-base font-semibold">{title}</h2>
       </div>
-      <div className="p-5">{children}</div>
+      <div className="p-6">{children}</div>
     </div>
   );
 }
@@ -60,7 +62,7 @@ export default async function StockDetailPage({ params }: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 space-y-6">
+    <div className="mx-auto max-w-7xl px-6 py-12 space-y-8">
       <Link
         href="/"
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
@@ -95,10 +97,34 @@ export default async function StockDetailPage({ params }: Props) {
             </SectionCard>
           )}
 
+          {/* 감정 추이 (30일) */}
+          <SectionCard icon={Activity} title="감정 추이 (최근 30일)">
+            <div className="flex items-center gap-4 mb-4 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block size-2 rounded-sm bg-[#6366f1]" />
+                뉴스 수
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block size-2 rounded-full bg-[#34d399]" />
+                평균 감정
+              </span>
+            </div>
+            <Suspense fallback={<TrendChartSkeleton />}>
+              <StockSentimentChart ticker={upperTicker} />
+            </Suspense>
+          </SectionCard>
+
+          {/* 스코어 브레이크다운 */}
+          <SectionCard icon={Award} title="스코어 브레이크다운">
+            <Suspense fallback={<ScoreBreakdownSkeleton />}>
+              <StockScoreBreakdown ticker={upperTicker} />
+            </Suspense>
+          </SectionCard>
+
           {/* 최신 재무지표 */}
           {profile.latestMetrics ? (
             <div className="space-y-3">
-              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide px-1">
+              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1">
                 최신 재무지표
               </h2>
               <StockMetricsTable metrics={profile.latestMetrics} />
@@ -122,7 +148,7 @@ export default async function StockDetailPage({ params }: Props) {
           <div className="space-y-3">
             <div className="flex items-center gap-2 px-1">
               <Newspaper className="size-4 text-muted-foreground" />
-              <h2 className="text-sm font-semibold">관련 뉴스</h2>
+              <h2 className="text-base font-semibold">관련 뉴스</h2>
             </div>
             <Suspense fallback={<NewsListSkeleton />}>
               <NewsList ticker={upperTicker} />

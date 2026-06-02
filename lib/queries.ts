@@ -8,6 +8,11 @@ import type {
   FinancialMetricData,
   NewsPageData,
   StockSummaryData,
+  StockScoreBreakdown,
+  StockSentimentTrend,
+  TopNewsData,
+  SectorRuleOf40Data,
+  SectorValuationData,
 } from "@/lib/types";
 
 // ─────────────────────────────────────────
@@ -19,12 +24,17 @@ export const qk = {
   sectorTrend: (sectorId: string) => ["sectors", sectorId, "trend"] as const,
   sectorStocks: (sectorId: string, type: string) =>
     ["sectors", sectorId, "stocks", type] as const,
+  sectorRuleOf40: (sectorId: string) => ["sectors", sectorId, "rule-of-40"] as const,
+  sectorValuation: (sectorId: string) => ["sectors", sectorId, "valuation"] as const,
   stock: (ticker: string) => ["stocks", ticker] as const,
   stockFinancials: (ticker: string, period: string) =>
     ["stocks", ticker, "financials", period] as const,
   stockNews: (ticker: string, page: number) =>
     ["stocks", ticker, "news", page] as const,
   stockSummary: (ticker: string) => ["stocks", ticker, "summary"] as const,
+  stockScoreBreakdown: (ticker: string) => ["stocks", ticker, "score-breakdown"] as const,
+  stockSentimentTrend: (ticker: string) => ["stocks", ticker, "sentiment-trend"] as const,
+  topNews: (minImportance: number, size: number) => ["news", "top", minImportance, size] as const,
 };
 
 // ─────────────────────────────────────────
@@ -101,5 +111,47 @@ export function useStockSummary(ticker: string) {
     queryKey: qk.stockSummary(ticker),
     queryFn: () => apiGet<StockSummaryData>(`/stocks/${ticker}/summary`),
     staleTime: 6 * 60 * 60 * 1000, // 6시간
+  });
+}
+
+export function useStockScoreBreakdown(ticker: string) {
+  return useQuery({
+    queryKey: qk.stockScoreBreakdown(ticker),
+    queryFn: () => apiGet<StockScoreBreakdown>(`/stocks/${ticker}/score-breakdown`),
+    staleTime: 60 * 60 * 1000, // 1시간 (배치 기반)
+  });
+}
+
+export function useStockSentimentTrend(ticker: string) {
+  return useQuery({
+    queryKey: qk.stockSentimentTrend(ticker),
+    queryFn: () => apiGet<StockSentimentTrend>(`/stocks/${ticker}/sentiment-trend`),
+    staleTime: 30 * 60 * 1000, // 30분
+  });
+}
+
+export function useTopNews(minImportance = 70, size = 30) {
+  return useQuery({
+    queryKey: qk.topNews(minImportance, size),
+    queryFn: () =>
+      apiGet<TopNewsData>(`/news/top?minImportance=${minImportance}&size=${size}`),
+    staleTime: 5 * 60 * 1000, // 5분
+  });
+}
+
+export function useSectorRuleOf40(sectorId: string, limit = 20) {
+  return useQuery({
+    queryKey: qk.sectorRuleOf40(sectorId),
+    queryFn: () =>
+      apiGet<SectorRuleOf40Data>(`/sectors/${sectorId}/rule-of-40?limit=${limit}`),
+    staleTime: 30 * 60 * 1000,
+  });
+}
+
+export function useSectorValuation(sectorId: string) {
+  return useQuery({
+    queryKey: qk.sectorValuation(sectorId),
+    queryFn: () => apiGet<SectorValuationData>(`/sectors/${sectorId}/valuation`),
+    staleTime: 30 * 60 * 1000,
   });
 }

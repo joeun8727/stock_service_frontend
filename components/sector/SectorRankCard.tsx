@@ -29,7 +29,7 @@ export function SectorRankCard({ item, sectorId }: SectorRankCardProps) {
     <Link href={`/sectors/${sectorId}`} className="group block focus:outline-none">
       <div
         className={cn(
-          "relative h-full rounded-2xl border border-white/5 bg-zinc-900 p-5 transition-all duration-200",
+          "relative h-full rounded-2xl border border-white/5 bg-zinc-900 p-6 transition-all duration-200",
           "hover:border-white/15 hover:bg-zinc-800/80 hover:shadow-lg hover:shadow-black/30",
           "group-focus-visible:ring-2 group-focus-visible:ring-primary/60"
         )}
@@ -38,7 +38,7 @@ export function SectorRankCard({ item, sectorId }: SectorRankCardProps) {
         <div className="flex items-start justify-between gap-2 mb-4">
           <span
             className={cn(
-              "inline-flex size-9 shrink-0 items-center justify-center rounded-full ring-1 text-sm font-bold",
+              "inline-flex size-10 shrink-0 items-center justify-center rounded-full ring-1 text-base font-bold",
               RANK_RING[rank] ?? "ring-white/10 text-muted-foreground",
               RANK_BG[rank] ?? "bg-white/5"
             )}
@@ -66,10 +66,10 @@ export function SectorRankCard({ item, sectorId }: SectorRankCardProps) {
         </div>
 
         {/* 섹터명 */}
-        <h3 className="text-lg font-bold tracking-tight mb-3">{name}</h3>
+        <h3 className="text-xl font-bold tracking-tight mb-4">{name}</h3>
 
         {/* 지표 3줄 */}
-        <div className="space-y-2 text-xs">
+        <div className="space-y-2.5 text-sm">
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">뉴스 볼륨</span>
             <span
@@ -120,7 +120,7 @@ export function SectorRankCard({ item, sectorId }: SectorRankCardProps) {
         </div>
 
         {/* 하단 링크 힌트 */}
-        <div className="mt-4 flex items-center justify-end gap-1 text-xs text-muted-foreground/50 transition-colors group-hover:text-primary/70">
+        <div className="mt-5 flex items-center justify-end gap-1 text-sm text-muted-foreground/50 transition-colors group-hover:text-primary/70">
           <span>상세 보기</span>
           <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
         </div>

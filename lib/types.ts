@@ -203,3 +203,113 @@ export interface StockSummaryData {
   avgSentiment: number;
   analyzedNewsCount: number; // 백엔드 필드명: analyzedNewsCount (analyzedAt 아님)
 }
+
+// ─────────────────────────────────────────
+// 8. 종목 스코어 브레이크다운
+// ─────────────────────────────────────────
+
+/** 스코어 1건 (screenType = "LARGE_CAP" | "GROWTH" 등) */
+export interface ScoreEntry {
+  screenType: string;
+  sectorGroup: string;
+  totalScore: number | null;
+  rankInSector: number | null;
+  factorPercentiles: Record<string, number>;
+  scoredAt: string;
+}
+
+/** GET /api/v1/stocks/{ticker}/score-breakdown 응답 data */
+export interface StockScoreBreakdown {
+  ticker: string;
+  companyName: string;
+  sectorCode: string | null;
+  sectorName: string | null;
+  scores: ScoreEntry[];
+}
+
+// ─────────────────────────────────────────
+// 9. 종목 감정 추이 (최근 30일)
+// ─────────────────────────────────────────
+
+export interface DailySentimentStat {
+  date: string;
+  newsCount: number;
+  avgSentiment: number | null;
+}
+
+/** GET /api/v1/stocks/{ticker}/sentiment-trend 응답 data */
+export interface StockSentimentTrend {
+  ticker: string;
+  companyName: string;
+  days: number;
+  trend: DailySentimentStat[];
+}
+
+// ─────────────────────────────────────────
+// 10. 전체 주요 뉴스
+// ─────────────────────────────────────────
+
+export interface TopNewsItem {
+  ticker: string;
+  companyName: string;
+  headline: string;
+  source: string;
+  sourceUrl: string;
+  publishedAt: string;
+  summary: string | null;
+  sentiment: number | null;
+  importance: number | null;
+  relevance: "HIGH" | "MEDIUM" | "LOW" | null;
+}
+
+/** GET /api/v1/news/top 응답 data */
+export interface TopNewsData {
+  news: TopNewsItem[];
+  count: number;
+}
+
+// ─────────────────────────────────────────
+// 11. 섹터 Rule of 40
+// ─────────────────────────────────────────
+
+export interface RuleOf40Item {
+  rank: number;
+  ticker: string;
+  companyName: string;
+  marketCap: number;
+  revenueGrowthPct: number | null;
+  fcfMarginPct: number | null;
+  operatingMarginPct: number | null;
+  ruleOf40Score: number | null;
+}
+
+/** GET /api/v1/sectors/{sectorId}/rule-of-40 응답 data */
+export interface SectorRuleOf40Data {
+  sectorId: number;
+  sectorCode: string;
+  sectorName: string;
+  sectorGroup: string;
+  stocks: RuleOf40Item[];
+}
+
+// ─────────────────────────────────────────
+// 12. 섹터 밸류에이션 비교
+// ─────────────────────────────────────────
+
+export interface ValuationItem {
+  ticker: string;
+  companyName: string;
+  marketCap: number;
+  per: number | null;
+  pbr: number | null;
+  psr: number | null;
+  peg: number | null;
+}
+
+/** GET /api/v1/sectors/{sectorId}/valuation 응답 data */
+export interface SectorValuationData {
+  sectorId: number;
+  sectorCode: string;
+  sectorName: string;
+  stocks: ValuationItem[];
+}

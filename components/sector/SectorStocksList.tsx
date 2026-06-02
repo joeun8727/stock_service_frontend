@@ -29,16 +29,16 @@ export function SectorStocksList({ stocks, type }: SectorStocksListProps) {
     <div className="overflow-x-auto rounded-xl border border-white/5">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-white/5 bg-white/[0.02] text-xs text-muted-foreground">
-            <th className="w-10 py-3 pl-4 text-center font-medium">#</th>
-            <th className="py-3 pl-3 text-left font-medium">티커</th>
-            <th className="py-3 pl-2 text-left font-medium">종목명</th>
-            <th className="py-3 pr-4 text-right font-medium">시가총액</th>
-            <th className="py-3 pr-4 text-right font-medium">매출성장</th>
-            <th className="py-3 pr-4 text-right font-medium">영업이익률</th>
-            <th className="py-3 pr-4 text-right font-medium">ROE</th>
+          <tr className="border-b border-white/5 bg-white/[0.02] text-sm text-muted-foreground">
+            <th className="w-10 py-3.5 pl-4 text-center font-medium">#</th>
+            <th className="py-3.5 pl-3 text-left font-medium">티커</th>
+            <th className="py-3.5 pl-2 text-left font-medium">종목명</th>
+            <th className="py-3.5 pr-4 text-right font-medium">시가총액</th>
+            <th className="py-3.5 pr-4 text-right font-medium">매출성장</th>
+            <th className="py-3.5 pr-4 text-right font-medium">영업이익률</th>
+            <th className="py-3.5 pr-4 text-right font-medium">ROE</th>
             {type === "growth" && (
-              <th className="py-3 pr-4 text-right font-medium">성장점수</th>
+              <th className="py-3.5 pr-4 text-right font-medium">성장점수</th>
             )}
           </tr>
         </thead>
@@ -48,10 +48,10 @@ export function SectorStocksList({ stocks, type }: SectorStocksListProps) {
               key={stock.ticker}
               className="transition-colors hover:bg-white/[0.03]"
             >
-              <td className="py-3 pl-4 text-center text-xs text-zinc-600 tabular-nums">
+              <td className="py-3.5 pl-4 text-center text-sm text-zinc-600 tabular-nums">
                 {stock.rank}
               </td>
-              <td className="py-3 pl-3">
+              <td className="py-3.5 pl-3">
                 <Link
                   href={`/stocks/${stock.ticker}`}
                   className="font-mono font-bold text-primary hover:text-primary/80 hover:underline"
@@ -59,25 +59,25 @@ export function SectorStocksList({ stocks, type }: SectorStocksListProps) {
                   {stock.ticker}
                 </Link>
               </td>
-              <td className="max-w-[200px] truncate py-3 pl-2 text-sm text-foreground/80">
+              <td className="max-w-[200px] truncate py-3.5 pl-2 text-base text-foreground/80">
                 {stock.companyName}
               </td>
-              <td className="py-3 pr-4 text-right font-mono text-sm tabular-nums">
+              <td className="py-3.5 pr-4 text-right font-mono text-base tabular-nums">
                 {formatMarketCap(stock.marketCap)}
               </td>
-              <td className="py-3 pr-4 text-right text-sm">
+              <td className="py-3.5 pr-4 text-right text-base">
                 <PctCell value={stock.metrics?.revenueGrowthYoy} />
               </td>
-              <td className="py-3 pr-4 text-right text-sm">
+              <td className="py-3.5 pr-4 text-right text-base">
                 <PctCell value={stock.metrics?.operatingMargin} />
               </td>
-              <td className="py-3 pr-4 text-right text-sm">
+              <td className="py-3.5 pr-4 text-right text-base">
                 <PctCell value={stock.metrics?.roe} />
               </td>
               {type === "growth" && (
-                <td className="py-3 pr-4 text-right">
+                <td className="py-3.5 pr-4 text-right">
                   {stock.growthScore != null ? (
-                    <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary ring-1 ring-primary/20 tabular-nums">
+                    <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-sm font-bold text-primary ring-1 ring-primary/20 tabular-nums">
                       {stock.growthScore.toFixed(1)}
                     </span>
                   ) : (

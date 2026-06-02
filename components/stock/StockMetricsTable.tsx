@@ -42,19 +42,19 @@ export function StockMetricsTable({ metrics }: StockMetricsTableProps) {
       {rows.map((row) => (
         <div
           key={row.label}
-          className="flex flex-col justify-between bg-zinc-900 px-4 py-3 gap-1"
+          className="flex flex-col justify-between bg-zinc-900 px-5 py-4 gap-1.5"
         >
           <div>
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+            <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
               {row.label}
             </p>
             {row.sub && (
-              <p className="text-[10px] text-zinc-600 mt-0.5">{row.sub}</p>
+              <p className="text-xs text-zinc-600 mt-0.5">{row.sub}</p>
             )}
           </div>
           <p
             className={cn(
-              "text-xl font-bold font-mono tabular-nums mt-1",
+              "text-2xl font-bold font-mono tabular-nums mt-1",
               row.positive === true && "text-emerald-400",
               row.positive === false && "text-red-400",
               row.positive == null && "text-foreground"
