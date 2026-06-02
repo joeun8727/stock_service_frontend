@@ -14,7 +14,12 @@ export default async function TopNewsPage() {
       "/news/top?minImportance=70&size=30",
       { cache: "no-store" }
     );
-    newsData = result.data;
+    newsData = {
+      ...result.data,
+      news: [...result.data.news].sort(
+        (a, b) => (b.importance ?? 0) - (a.importance ?? 0)
+      ),
+    };
     disclaimer = result.disclaimer;
   } catch (e) {
     console.error("[TopNewsPage] fetch error:", e);
@@ -30,8 +35,8 @@ export default async function TopNewsPage() {
           <h1 className="text-3xl font-bold tracking-tight">주요 뉴스</h1>
         </div>
         <p className="text-base text-muted-foreground max-w-xl">
-          전 종목 중요도 70 이상 뉴스. LLM 요약·감정 분석 포함. 투자 추천이
-          아닌 정보 제공 목적입니다.
+          전 종목 중요도 70 이상 뉴스. 중요도 높은 순으로 정렬. LLM 요약·감정
+          분석 포함. 투자 추천이 아닌 정보 제공 목적입니다.
         </p>
       </div>
 
