@@ -1,6 +1,6 @@
 import { apiGetWithDisclaimer } from "@/lib/api";
 import type { TopNewsData } from "@/lib/types";
-import { TopNewsFeed } from "@/components/news/TopNewsFeed";
+import { TopNewsPaginated } from "@/components/news/TopNewsPaginated";
 import { Disclaimer } from "@/components/common/Disclaimer";
 import { Newspaper } from "lucide-react";
 
@@ -11,7 +11,7 @@ export default async function TopNewsPage() {
 
   try {
     const result = await apiGetWithDisclaimer<TopNewsData>(
-      "/news/top?minImportance=70&size=30",
+      "/news/top?minImportance=70&days=7",
       { cache: "no-store" }
     );
     newsData = {
@@ -35,8 +35,8 @@ export default async function TopNewsPage() {
           <h1 className="text-3xl font-bold tracking-tight">주요 뉴스</h1>
         </div>
         <p className="text-base text-muted-foreground max-w-xl">
-          전 종목 중요도 70 이상 뉴스. 중요도 높은 순으로 정렬. LLM 요약·감정
-          분석 포함. 투자 추천이 아닌 정보 제공 목적입니다.
+          최근 7일 · 중요도 70 이상 뉴스. 중요도 높은 순, 10건씩 페이지 표시.
+          LLM 요약·감정 분석 포함. 투자 추천이 아닌 정보 제공 목적입니다.
         </p>
       </div>
 
@@ -59,7 +59,7 @@ export default async function TopNewsPage() {
               건
             </p>
           )}
-          <TopNewsFeed items={newsData.news} />
+          <TopNewsPaginated items={newsData.news} />
           {disclaimer && <Disclaimer text={disclaimer} />}
         </>
       )}
